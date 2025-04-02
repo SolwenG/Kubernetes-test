@@ -1,0 +1,11 @@
+services:
+    backend:
+        build: ./backend
+        container_name: backend_exo2
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./backend:/app
+            - /app/node_modules
+        environment:
+            - PORT=3000

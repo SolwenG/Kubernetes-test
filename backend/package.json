@@ -1,0 +1,13 @@
+{
+  "name": "exo2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run dev"
+  },
+  "private": true,
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
