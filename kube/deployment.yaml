@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: exo2-deploy
+    labels:
+        app: exo2
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: exo2
+    template:
+        metadata:
+            labels:
+                app: exo2
+        spec:
+            containers:
+                -   name: exo2
+                    image: ghcr.io/solweng/kube-exo2/backend:latest
+                    ports:
+                        -   containerPort: 80
+                    imagePullPolicy: Always
+            imagePullSecrets:
+                - name: ghcr-secret
