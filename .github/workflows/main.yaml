@@ -1,0 +1,38 @@
+name: Build & Push to GHCR
+
+on:
+    push:
+        branches: [ main ]
+
+permissions:
+    contents: read
+    packages: write
+
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout Code
+                uses: actions/checkout@v3
+
+            -   name: Login to GitHub Container Registry (GHCR)
+                uses: docker/login-action@v3
+                with:
+                    registry: ghcr.io
+                    username: ${{ github.actor }}
+                    password: ${{ secrets.GITHUB_TOKEN }}
+
+            -   name: Extract image
+                id: extract
+                run: |
+                    IMAGE_NAME="ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')/backend"
+                    echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
+
+            -   name: Build Docker image
+                run: |
+                    docker build -t ${{ steps.extract.outputs.image_name }}:latest ./backend
+
+            -   name: Push Docker image
+                run: |
+                    docker push ${{ steps.extract.outputs.image_name }}:latest
